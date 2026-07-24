@@ -1,5 +1,5 @@
 # Scrum Planning Poker
 
-Versión inicial pra fines educativos:
+Scrum Planning Poker es una herramienta sencilla y visual para facilitar la estimación de tareas en equipos ágiles. Permite realizar votaciones rápidas, compartir decisiones y mantener el proceso de planificación más claro y dinámico durante las reuniones de Scrum.
 
-Ver esta aplicación en la web: https://scrum-planning-poker-hcg.web.app/
+Puedes ver la aplicación en la web: https://scrum-planning-poker-hcg.web.app/

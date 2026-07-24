@@ -85,18 +85,18 @@ export default function DeckGrid({ cards, soundEnabled, hapticEnabled, onCardSel
             {/* Top Index */}
             <div className="flex w-full justify-between items-start relative z-10">
               <div className="flex flex-col items-center leading-none text-slate-800 dark:text-white">
-                <span className="text-sm font-black font-display group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <span className="text-base sm:text-lg font-black font-display group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   {card.value}
                 </span>
-                <span className="text-[10px] opacity-75 mt-0.5 group-hover:text-indigo-500 transition-colors">{suit}</span>
+                <span className="text-sm opacity-75 mt-0.5 group-hover:text-indigo-500 transition-colors">{suit}</span>
               </div>
             </div>
 
             {/* Giant Center Value inside beautiful circle */}
             <div className="flex flex-1 items-start justify-center pt-2 pb-1.5 relative z-10">
-              <div className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-100/50 dark:bg-white/5 border border-slate-200/40 dark:border-white/10 shadow-sm group-hover:scale-110 transition-transform duration-300">
+              <div className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-100/50 dark:bg-white/5 border border-slate-200/40 dark:border-white/10 shadow-sm group-hover:scale-110 transition-transform duration-300">
                 <div className="absolute inset-1 rounded-full border border-dashed border-slate-300/40 dark:border-white/10" />
-                <span className="text-2xl sm:text-3xl font-black font-display tracking-tight text-slate-800 dark:text-white">
+                <span className="text-3xl sm:text-4xl font-black font-display tracking-tight text-slate-800 dark:text-white">
                   {card.value}
                 </span>
               </div>
