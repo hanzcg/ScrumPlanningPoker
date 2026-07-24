@@ -1,0 +1,6 @@
+{
+  "name": "Scrum Planning Poker",
+  "description": "Una aplicación web responsiva (PWA) para simular el juego de Scrum Planning Poker utilizando cartas con la serie de Fibonacci, ideal para reuniones virtuales y presenciales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

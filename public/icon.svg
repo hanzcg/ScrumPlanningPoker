@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#818cf8" />
+    </linearGradient>
+    <linearGradient id="card-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Rounded App Icon background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)" />
+  
+  <!-- Card Outline Shadow (simulated with black opacity) -->
+  <rect x="144" y="94" width="224" height="324" rx="24" fill="#000000" opacity="0.15" />
+  
+  <!-- The Main Card -->
+  <rect x="140" y="86" width="232" height="340" rx="24" fill="url(#card-grad)" stroke="#ffffff" stroke-width="4" />
+  
+  <!-- Fibonacci Golden Spiral Accent (subtle and stylish in the card background) -->
+  <path d="M 256,220 
+           A 20,20 0 0,1 236,200 
+           A 40,40 0 0,1 276,160 
+           A 80,80 0 0,1 356,240 
+           A 160,160 0 0,1 196,400" 
+        fill="none" 
+        stroke="#e2e8f0" 
+        stroke-width="6" 
+        stroke-linecap="round" 
+        opacity="0.8" />
+  
+  <!-- Fibonacci Sequence Small Indicator in Corners -->
+  <text x="164" y="126" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="28" fill="#4f46e5">8</text>
+  <text x="348" y="394" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="28" fill="#4f46e5" text-anchor="end" transform="rotate(180, 348, 394)">8</text>
+  
+  <!-- Main Display Value '8' inside a beautiful badge -->
+  <circle cx="256" cy="256" r="54" fill="#4f46e5" />
+  <text x="256" y="275" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="56" fill="#ffffff" text-anchor="middle">8</text>
+</svg>
