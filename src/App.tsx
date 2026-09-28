@@ -5,6 +5,7 @@ import { FIBONACCI_CARDS, ALL_CARDS } from './data';
 import DeckGrid from './components/DeckGrid';
 import CardModal from './components/CardModal';
 import SettingsPanel from './components/SettingsPanel';
+import MobileUpdateModal from './components/MobileUpdateModal';
 import { soundManager } from './utils/audio';
 import { triggerHaptic } from './utils/haptics';
 import { logAnalyticsEvent } from './utils/firebase';
@@ -186,6 +187,9 @@ export default function App() {
         settings={settings}
         onClose={() => setSelectedCard(null)}
       />
+
+      {/* Mobile Update Popup Modal */}
+      <MobileUpdateModal />
 
     </div>
   );
