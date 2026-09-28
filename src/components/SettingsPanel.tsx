@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Moon, Sun, Volume2, VolumeX, Sparkles, Smartphone, ShieldAlert } from 'lucide-react';
+import { X, Moon, Sun, Volume2, VolumeX, Sparkles, Smartphone, ShieldAlert, RefreshCw, QrCode } from 'lucide-react';
 import { AppSettings } from '../types';
 import { soundManager } from '../utils/audio';
 import { triggerHaptic } from '../utils/haptics';
+import { pwaManager } from '../utils/pwa';
+import QRCodeModal from './QRCodeModal';
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -13,6 +15,33 @@ interface SettingsPanelProps {
 }
 
 export default function SettingsPanel({ isOpen, settings, onUpdateSettings, onClose }: SettingsPanelProps) {
+  const [updateStatus, setUpdateStatus] = useState<string | null>(null);
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+
+  const checkForUpdates = async () => {
+    soundManager.playClick(settings.soundEnabled);
+    triggerHaptic(settings.hapticFeedback, 10);
+
+    setUpdateStatus('Buscando actualizaciones...');
+    const result = await pwaManager.checkForUpdates();
+
+    if (result === 'updated') {
+      setUpdateStatus('¡Nueva versión lista! Aplicando...');
+      setTimeout(() => {
+        pwaManager.applyUpdate();
+      }, 1000);
+    } else if (result === 'no-update') {
+      setUpdateStatus('¡Tienes la última versión instalada!');
+      setTimeout(() => setUpdateStatus(null), 3500);
+    } else if (result === 'unsupported') {
+      setUpdateStatus('No soportado en este navegador.');
+      setTimeout(() => setUpdateStatus(null), 3000);
+    } else {
+      setUpdateStatus('No se pudo conectar con el servidor.');
+      setTimeout(() => setUpdateStatus(null), 3000);
+    }
+  };
+
   const toggleSetting = (key: keyof AppSettings) => {
     const nextValue = !settings[key];
     const nextSettings = {
@@ -28,8 +57,9 @@ export default function SettingsPanel({ isOpen, settings, onUpdateSettings, onCl
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
+    <>
+      <AnimatePresence>
+        {isOpen && (
         <>
           {/* Backdrop */}
           <motion.div
@@ -119,6 +149,62 @@ export default function SettingsPanel({ isOpen, settings, onUpdateSettings, onCl
                 </button>
               </div>
 
+              {/* Manual Update */}
+              <div className="border-t border-slate-200/50 pt-6 dark:border-white/10">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 text-sm font-sans">
+                        Actualización de la App
+                      </span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
+                        Busca y aplica versiones nuevas manualmente
+                      </span>
+                    </div>
+                    <button
+                      onClick={checkForUpdates}
+                      disabled={updateStatus === 'Buscando actualizaciones...' || updateStatus === 'Actualizando versión...'}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold font-sans transition-all active:scale-95 disabled:opacity-60 cursor-pointer shadow-sm hover:shadow"
+                    >
+                      <RefreshCw className={`h-3.5 w-3.5 ${updateStatus === 'Buscando actualizaciones...' ? 'animate-spin' : ''}`} />
+                      <span>Actualizar</span>
+                    </button>
+                  </div>
+                  {updateStatus && (
+                    <div className="mt-1 text-xs text-indigo-600 dark:text-indigo-400 font-medium font-sans flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                      {updateStatus}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Share via QR Code */}
+              <div className="border-t border-slate-200/50 pt-6 dark:border-white/10">
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-0.5">
+                    <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200 text-sm font-sans">
+                      <QrCode className="h-4 w-4 text-indigo-500" />
+                      <span>Código QR</span>
+                    </div>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      Escanea para abrir la app en otro dispositivo
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      soundManager.playClick(settings.soundEnabled);
+                      triggerHaptic(settings.hapticFeedback, 10);
+                      setIsQRModalOpen(true);
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/30 rounded-lg text-xs font-semibold font-sans transition-all active:scale-95 cursor-pointer shadow-sm hover:shadow"
+                  >
+                    <QrCode className="h-3.5 w-3.5" />
+                    <span>Ver QR</span>
+                  </button>
+                </div>
+              </div>
+
             </div>
 
             {/* Quick How to play guide */}
@@ -153,5 +239,13 @@ export default function SettingsPanel({ isOpen, settings, onUpdateSettings, onCl
         </>
       )}
     </AnimatePresence>
+
+    {/* QR Code Modal */}
+    <QRCodeModal
+      isOpen={isQRModalOpen}
+      onClose={() => setIsQRModalOpen(false)}
+      url="https://scrum-planning-poker-hcg.web.app/"
+    />
+    </>
   );
 }
